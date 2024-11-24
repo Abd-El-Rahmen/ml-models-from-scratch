@@ -1,4 +1,5 @@
 import pandas as pd 
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
@@ -15,7 +16,7 @@ def handle_missing_values(data):
     numerical_columns = data.select_dtypes(include =['float64', 'int64'] ).columns
     categorical_cols = data.select_dtypes(include = ['object']).columns
 
-    # Second : Imputing missing numerical values with the median and
+    # Second : Imputing missing numerical values with the median 
     imputer = SimpleImputer(strategy='median')
     data[numerical_columns] = imputer.fit_transform(data[numerical_columns])
 
@@ -32,7 +33,7 @@ def encode_categorical_features(data):
     categorical_cols = data.select_dtypes(include = ['object']).columns
 
     # OneHotEncoder for categorical variables
-    encoder = OneHotEncoder(drop='first'  , sparse_output=False)
+    encoder = OneHotEncoder(drop='first'  , sparse_output=False,dtype=np.int32)
     encoded_data = pd.DataFrame(encoder.fit_transform(data[categorical_cols]) )
     encoded_data.columns = encoder.get_feature_names_out(categorical_cols)
 
@@ -54,8 +55,8 @@ def scale_numerical_features(data):
     return data
 
 def split_data(data,target_column , test_size=0.2, random_state=42):
-    x= data.drop(target_column , axis=1)
-    y = data[target_column]
+    x= data.drop(target_column , axis=1).to_numpy()
+    y = data[target_column].to_numpy()
 
     X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=test_size, random_state=random_state)
 
@@ -72,11 +73,11 @@ def preprocess_data(filepath , target_column):
     # 2- Handle Missing Values
     data = handle_missing_values(data)
 
-    # 3- Encode categorical variables
-    data = encode_categorical_features(data)
-
-    # 4- Scale numerical features
+    # 3- Scale numerical features
     data = scale_numerical_features(data)
+
+    # 4- Encode categorical variables 
+    data = encode_categorical_features(data)
 
     # 5- Split data
     X_train, X_test, y_train, y_test = split_data(data, target_column)
