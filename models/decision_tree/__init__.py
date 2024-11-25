@@ -1,1 +1,1 @@
-from .classification_decision_tree import DecisionTree
+from .classification_decision_tree import ClassificationDecisionTree
