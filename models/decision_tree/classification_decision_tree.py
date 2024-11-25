@@ -1,6 +1,6 @@
 import numpy as np
 
-class DecisionTree:
+class ClassificationDecisionTree:
     def __init__(self, max_depth=None, min_samples_split=2):
         self.max_depth = max_depth
         self.min_samples_split = min_samples_split
