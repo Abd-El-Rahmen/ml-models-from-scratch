@@ -30,8 +30,8 @@ class NeuralNetwork:
         self.biases = []
 
         for i in range(len(self.layer_sizes) -1 ):
-            weight = np.random.rand(self.layer_sizes[i] , self.layer_sizes[i+1])
-            bias = np.zeros(1,self.layer_sizes[i])
+            weight = np.random.randn(self.layer_sizes[i] , self.layer_sizes[i+1]) * 0.1
+            bias = np.zeros(1,self.layer_sizes[i]+1)
             self.weights.append(weight)
             self.biases.append(bias)
    
