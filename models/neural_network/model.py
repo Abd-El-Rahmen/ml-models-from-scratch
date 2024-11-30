@@ -16,7 +16,7 @@ def sigmoid(x):
 
 # Derviative of Sigmoid
 def d_sigmoid(x):
-    return x/(1 - x)
+    return x*(1 - x)
 
 # Neural Networks
 class NeuralNetwork:
@@ -31,7 +31,7 @@ class NeuralNetwork:
 
         for i in range(len(self.layer_sizes) -1 ):
             weight = np.random.randn(self.layer_sizes[i] , self.layer_sizes[i+1]) * 0.1
-            bias = np.zeros(1,self.layer_sizes[i]+1)
+            bias = np.zeros(self.layer_sizes[i + 1])
             self.weights.append(weight)
             self.biases.append(bias)
    
@@ -59,7 +59,7 @@ class NeuralNetwork:
 
         for i in range(len(self.layer_sizes) -1 ,-1 , -1): # to start from the last to the first layer
             if i == len(self.layer_sizes) - 2 :
-                dZ = error * d_sigmoid(self.activations[i+1]) 
+               dZ = error * d_sigmoid(self.activations[i+1])
             else:
                 dZ = error * d_relu(self.activations[i+1])
             
