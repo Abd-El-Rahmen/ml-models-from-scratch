@@ -73,6 +73,21 @@ class NeuralNetwork:
 
             #Propagate error backward
             error = np.dot(dZ , self.weights[i].T)
+
+    # Train the network
+    def train(self , X , y , epochs = 100, learning_rate = 0.01):
+        for epoch in range(epochs):
+            # Forward pass
+            self.forward(X)
+            # Backward pass
+            self.backward(X, y , learning_rate)
+
+            # print loss every 10 epochs
+            if epoch % 100 == 0:
+                loss = np.mean(np.square(y - self.activations[-1]))
+                print(f"Epoch {epoch}/{epochs} - Loss: {loss:.6f}")
+
+
     
             
 
