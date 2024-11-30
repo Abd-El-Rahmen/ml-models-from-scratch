@@ -12,7 +12,7 @@ def d_relu(x):
 
 # Sigmoid activation function
 def sigmoid(x):
-    return 1/(1+ np.exp(x))
+    return 1 / (1 + np.exp(-x))
 
 # Derviative of Sigmoid
 def d_sigmoid(x):
@@ -57,7 +57,7 @@ class NeuralNetwork:
         m = X.shape[0]
         error = self.activations[-1] - y
 
-        for i in range(len(self.layer_sizes) -1 ,-1 , -1): # to start from the last to the first layer
+        for i in range(len(self.layer_sizes) -2 ,-1 , -1): # to start from the last to the first layer
             if i == len(self.layer_sizes) - 2 :
                dZ = error * d_sigmoid(self.activations[i+1])
             else:
@@ -65,8 +65,7 @@ class NeuralNetwork:
             
             # Calculate gradients
             dW = np.dot(self.activations[i].T,dZ) / m
-            dB = np.sum(dZ,axis=0,keepdims=True) / m
-
+            dB = np.sum(dZ,axis=0,keepdims=False) / m
             # Update weights and biases using gradient descent
             self.weights[i] -= learning_rate * dW
             self.biases[i] -= learning_rate * dB
@@ -74,6 +73,11 @@ class NeuralNetwork:
             #Propagate error backward
             error = np.dot(dZ , self.weights[i].T)
 
+    # Prediction
+    def predict(self,X):
+        prediction = self.forward(X)
+        return prediction
+    
     # Train the network
     def train(self , X , y , epochs = 100, learning_rate = 0.01):
         for epoch in range(epochs):
@@ -86,8 +90,7 @@ class NeuralNetwork:
             if epoch % 100 == 0:
                 loss = np.mean(np.square(y - self.activations[-1]))
                 print(f"Epoch {epoch}/{epochs} - Loss: {loss:.6f}")
-
-
+        
     
             
 
